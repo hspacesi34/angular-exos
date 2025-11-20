@@ -4,11 +4,10 @@ import { ActiveUserComponent } from "../../components/active-user/active-user.co
 import { UserDataComponent } from "../../components/user-data/user-data.component";
 
 @Component({
-  selector: 'app-component-communication',
-  standalone: true,
-  imports: [ActiveUserComponent, UserDataComponent],
-  templateUrl: './component-communication.component.html',
-  styleUrl: './component-communication.component.css'
+    selector: 'app-component-communication',
+    imports: [ActiveUserComponent, UserDataComponent],
+    templateUrl: './component-communication.component.html',
+    styleUrl: './component-communication.component.css'
 })
 
 export class ComponentCommunicationComponent {

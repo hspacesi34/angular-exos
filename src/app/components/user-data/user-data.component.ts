@@ -3,11 +3,10 @@ import { User } from '../../models/User';
 import { FormBuilder, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-user-data',
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
-  templateUrl: './user-data.component.html',
-  styleUrl: './user-data.component.css'
+    selector: 'app-user-data',
+    imports: [FormsModule, ReactiveFormsModule],
+    templateUrl: './user-data.component.html',
+    styleUrl: './user-data.component.css'
 })
 export class UserDataComponent {
   @Output() confirmSubmit = new EventEmitter<User>();
