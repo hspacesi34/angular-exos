@@ -16,7 +16,7 @@
         </li>
       </ul>
     </div>
-    <a class="btn btn-ghost text-xl">daisyUI</a>
+    <a class="btn btn-ghost text-xl">Angular-exos</a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
@@ -26,10 +26,17 @@
           <summary>Exos</summary>
           <ul class="p-2">
             <li><a routerLink="/tp/component-communication">TP: Component Communication</a></li>
+            <li><a routerLink="/exo/tasks">EXO: lire et ecrire firebase</a></li>
           </ul>
         </details>
       </li>
-      <li><a routerLink="/register">Register</a></li>
+      <li><a routerLink="/admin-dashboard">Admin dashboard</a></li>
+      @if (!auth.currentUser) {
+        <li><a routerLink="/register">Register</a></li>
+        <li><a routerLink="/login">Login</a></li>
+      } @else {
+        <li><a (click)="signOut()">Se déconnecter</a></li>
+      }
     </ul>
   </div>
   <div class="navbar-end">

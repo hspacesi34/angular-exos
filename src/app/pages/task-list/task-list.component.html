@@ -1,0 +1,14 @@
+<div class="container mt-5">
+    <h2>Liste des tâches</h2>
+    <form (ngSubmit)="addTask()" class="d-flex mb-3">
+        <input [(ngModel)]="newTask().title" name="task" type="text" placeholder="Nouvelle tâche"
+            class="form-control me-2" />
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+
+    <ul class="list-group">
+        @for (task of tasks(); track $index) {
+            <li class="list-group-item">{{ task.title }} Status : {{task.status}} ID: {{ task.id }}</li>
+        }
+    </ul>
+</div>

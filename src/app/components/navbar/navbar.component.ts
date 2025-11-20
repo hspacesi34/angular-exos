@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -8,5 +9,12 @@ import { RouterLink } from '@angular/router';
     styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+    public auth: Auth = inject(Auth);
 
+    constructor() {
+    }
+
+    signOut() {
+        this.auth.signOut().then(res => console.log(res)).catch(err => console.error(err));
+    }
 }
