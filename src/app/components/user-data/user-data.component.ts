@@ -1,24 +1,37 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { User } from '../../models/User';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-data',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './user-data.component.html',
   styleUrl: './user-data.component.css'
 })
 export class UserDataComponent {
   @Output() confirmSubmit = new EventEmitter<User>();
+  formBuilder = inject(FormBuilder);
   public nom: string = "";
   public age: number = 0;
 
+  userForm = this.formBuilder.group({
+    nom: ['', [Validators.required, Validators.minLength(1), Validators.pattern('[a-zA-Z ]*')]],
+    age: [0, [Validators.required, Validators.minLength(1)]]
+  });
+
+  ngOnInit() {
+    this.userForm.reset();
+  }
+
   submit() {
-    const activeUser: User = {
-      nom: this.nom,
-      age: this.age
-    };
-    this.confirmSubmit.emit(activeUser);
+    if (this.userForm.valid) {
+      const activeUser: User = {
+        nom: this.userForm.value.nom!,
+        age: this.userForm.value.age!
+      };
+      this.confirmSubmit.emit(activeUser);
+      this.userForm.reset();
+    }
   }
 }

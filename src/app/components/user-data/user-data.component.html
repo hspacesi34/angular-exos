@@ -1,7 +1,9 @@
-<fieldset class="fieldset">
-  <legend class="fieldset-legend">What is your name?</legend>
-  <input type="text" class="input" placeholder="votre nom..." [(ngModel)]="nom" />
-  <legend class="fieldset-legend">What is your age?</legend>
-  <input type="number" class="input" placeholder="votre age..." [(ngModel)]="age" />
-  <button class="btn" (click)="submit()">Valider</button>
-</fieldset>
+<form action="" [formGroup]="userForm" (ngSubmit)="submit()">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">What is your name?</legend>
+      <input type="text" class="input" placeholder="votre nom..." formControlName="nom" required="true"/>
+      <legend class="fieldset-legend">What is your age?</legend>
+      <input type="number" class="input" placeholder="votre age..." formControlName="age" required="true"/>
+      <button type="submit" class="btn" [disabled]="userForm.invalid">Valider</button>
+    </fieldset>
+</form>
