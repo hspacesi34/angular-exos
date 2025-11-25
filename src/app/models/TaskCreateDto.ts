@@ -1,5 +1,4 @@
-export interface Task {
-    id: string,
+export interface TaskCreateDto {
     title: string,
     status: string,
     priority: string,

@@ -1,20 +1,23 @@
 import { Component, inject, signal } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/Task';
-import { FormsModule } from '@angular/forms';
 import { TaskCreateDto } from '../../models/TaskCreateDto';
+import { FormsModule } from '@angular/forms';
+import { NgClass } from "../../../../node_modules/@angular/common/types/_common_module-chunk";
 
 @Component({
-  selector: 'app-task-list',
-  imports: [FormsModule],
-  templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.css',
+  selector: 'app-tp-tasks',
+  imports: [FormsModule, NgClass],
+  templateUrl: './tp-tasks.component.html',
+  styleUrl: './tp-tasks.component.css',
 })
-export class TaskListComponent {
+export class TpTasksComponent {
   private taskService = inject(TaskService);
   public tasks = signal<Task[]>([]);
   public newTaskTitle = signal<string>('');
+  public newTaskPriority = signal<string>('');
   public editTaskTitle = signal<string>('');
+  public editTaskPriority = signal<string>('');
 
   constructor() {
   }
@@ -36,8 +39,10 @@ export class TaskListComponent {
     const newTask: TaskCreateDto = {
       title: this.newTaskTitle(),
       status: "test",
-      priority: "basse"
+      priority: this.newTaskPriority()
     }
+    console.log(newTask);
+    
     this.taskService.addTask(newTask).then(res => console.log(res)).catch(err => console.error(err));
     this.newTaskTitle.set("");
   }
@@ -58,7 +63,7 @@ export class TaskListComponent {
         id: id,
         title: this.editTaskTitle(),
         status: "test",
-        priority: "basse"
+        priority: this.editTaskPriority()
       }
       this.taskService.updateTask(editTask).then(res => console.log(res)).catch(err => console.error(err));
       this.editTaskTitle.set("");

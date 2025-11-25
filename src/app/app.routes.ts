@@ -11,7 +11,8 @@ export const routes: Routes = [
     {path:"admin-dashboard", loadComponent:()=>import('./pages/admin-dashboard/admin-dashboard.component').then(m=>m.AdminDashboardComponent), canActivate: [AuthGuardService]},
     {path:"tp", 
         children: [
-        {path:"component-communication", loadComponent:()=>import('./pages/component-communication/component-communication.component').then(m=>m.ComponentCommunicationComponent)}
+        {path:"component-communication", loadComponent:()=>import('./pages/component-communication/component-communication.component').then(m=>m.ComponentCommunicationComponent)},
+        {path:"tasks", loadComponent:()=>import('./pages/tp-tasks/tp-tasks.component').then(m=>m.TpTasksComponent)}
     ]},
     {path:"exo", 
         children: [

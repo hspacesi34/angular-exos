@@ -1,0 +1,22 @@
+<div class="container mt-5 text-center">
+    <h2>Liste des tâches</h2>
+    <form (ngSubmit)="addTask()" class="d-flex mb-3">
+        <input [(ngModel)]="newTaskTitle" name="task" type="text" placeholder="Nouvelle tâche" class="input" />
+        <select [(ngModel)]="newTaskPriority" name="priority" class="select">
+            <option disabled selected>Choisissez une priorité</option>
+            <option [ngValue]="'basse'">Basse</option>
+            <option [ngValue]="'moyenne'">Moyenne</option>
+            <option [ngValue]="'haute'">Haute</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+
+    <ul class="list-group">
+        @for (task of tasks(); track task.id) {
+        <li class="list-group-item" [ngClass]="{'complete': task.status === 'complete', 'uncomplete': task.status !== 'complete'}">{{ task.title }} Status : {{ task.status }} Priority: {{ task.priority }}
+            <button (click)="updateTask(task.id!)" class="btn">Marquer comme complete</button>
+            <button (click)="delTask(task.id!)" class="btn mr-2 ml-2">Supprimer</button>
+        </li>
+        }
+    </ul>
+</div>

@@ -1,14 +1,18 @@
-<div class="container mt-5">
+<div class="container mt-5 text-center">
     <h2>Liste des tâches</h2>
     <form (ngSubmit)="addTask()" class="d-flex mb-3">
-        <input [(ngModel)]="newTask().title" name="task" type="text" placeholder="Nouvelle tâche"
-            class="form-control me-2" />
+        <input [(ngModel)]="newTaskTitle" name="task" type="text" placeholder="Nouvelle tâche"
+            class="input" />
         <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
 
     <ul class="list-group">
-        @for (task of tasks(); track $index) {
-            <li class="list-group-item">{{ task.title }} Status : {{task.status}} ID: {{ task.id }}</li>
+        @for (task of tasks(); track task.id) {
+            <li class="list-group-item">{{ task.title }} Status : {{ task.status }} ID: {{ task.id }} 
+            <button (click)="delTask(task.id!)" class="btn mr-2 ml-2">Supprimer</button>
+            <input class="input mr-2" [ngModel]="task.title" (ngModelChange)="updateTaskTitle($event)" placeholder="Modifier titre tache" />
+            <button (click)="updateTask(task.id!)" class="btn">Modif</button>
+            </li>
         }
     </ul>
 </div>
