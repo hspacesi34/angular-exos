@@ -1,9 +1,12 @@
-<div class="container mt-5 text-center">
+<div class="flex flex-col items-center min-h-screen pt-10">
+
     <h2>Liste des tâches</h2>
-    <form (ngSubmit)="addTask()" class="d-flex mb-3">
-        <input [(ngModel)]="newTaskTitle" name="task" type="text" placeholder="Nouvelle tâche" class="input" />
-        <select [(ngModel)]="newTaskPriority" name="priority" class="select">
-            <option disabled selected>Choisissez une priorité</option>
+
+    <form (ngSubmit)="addTask()" class="flex items-center space-x-3 mb-6">
+        <input [(ngModel)]="newTaskTitle" name="task" type="text" placeholder="Nouvelle tâche"
+            class="input input-bordered w-full max-w-xs" />
+        <select [(ngModel)]="newTaskPriority" name="priority" class="select select-bordered">
+            <option disabled selected>Priorité</option>
             <option [ngValue]="'basse'">Basse</option>
             <option [ngValue]="'moyenne'">Moyenne</option>
             <option [ngValue]="'haute'">Haute</option>
@@ -11,11 +14,44 @@
         <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
 
-    <ul class="list-group">
+    <div class="stats shadow mb-8 w-full max-w-3xl">
+
+        <div class="stat place-items-center">
+            <div class="stat-title">Tâches Complètes</div>
+            <div class="stat-value text-success">{{ tasksCompleted() }}</div>
+            <div class="stat-desc text-success">Bien joué !</div>
+        </div>
+
+        <div class="stat place-items-center">
+            <div class="stat-title">Tâches Restantes</div>
+            <div class="stat-value text-warning">{{ tasksRemaining() }}</div>
+            <div class="stat-desc text-warning">Priorité !</div>
+        </div>
+
+    </div>
+
+    <ul class="w-full max-w-3xl space-y-2">
         @for (task of tasks(); track task.id) {
-        <li class="list-group-item" [ngClass]="{'complete': task.status === 'complete', 'uncomplete': task.status !== 'complete'}">{{ task.title }} Status : {{ task.status }} Priority: {{ task.priority }}
-            <button (click)="updateTask(task.id!)" class="btn">Marquer comme complete</button>
-            <button (click)="delTask(task.id!)" class="btn mr-2 ml-2">Supprimer</button>
+        <li class="flex justify-between items-center p-4 rounded-lg shadow-md bg-base-100"
+            [ngClass]="{'bg-success/20 border-l-4 border-success': task.status === 'complete', 'bg-warning/20 border-l-4 border-warning': task.status !== 'complete'}">
+
+            <div>
+                <p class="font-semibold">{{ task.title }}</p>
+                <div class="text-sm text-gray-500">
+                    Status: {{ task.status }} | Priorité: {{ task.priority }}
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                @if (task.status !== "complete") {
+                <button (click)="updateTask(task.id!, task.priority, task.title)" class="btn btn-sm btn-success">
+                    Marquer comme complete
+                </button>
+                }
+                <button (click)="delTask(task.id!)" class="btn btn-sm btn-error">
+                    Supprimer
+                </button>
+            </div>
         </li>
         }
     </ul>

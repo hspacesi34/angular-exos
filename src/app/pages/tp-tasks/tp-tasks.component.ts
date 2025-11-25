@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/Task';
 import { TaskCreateDto } from '../../models/TaskCreateDto';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from "../../../../node_modules/@angular/common/types/_common_module-chunk";
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-tp-tasks',
@@ -22,6 +22,14 @@ export class TpTasksComponent {
   constructor() {
   }
 
+  tasksCompleted = computed(() => {
+    return this.tasks().filter(t => t.status === 'complete').length;
+  });
+
+  tasksRemaining = computed(() => {
+    return this.tasks().filter(t => t.status !== 'complete').length;
+  });
+
   ngOnInit() {
     this.getTasks();
   }
@@ -31,18 +39,29 @@ export class TpTasksComponent {
       // if (data.length > 0) {
       //   console.log(data);
       // }
-      this.tasks.set(data);
+      const PriorityOrder: Record<string, number> = {
+        'haute': 1,
+        'moyenne': 2,
+        'basse': 3,
+      };
+      const sortedData = data.sort((a, b) => {
+        const priorityA = PriorityOrder[a.priority];
+        const priorityB = PriorityOrder[b.priority];
+
+        return priorityA - priorityB;
+      });
+      this.tasks.set(sortedData);
     })
   }
 
   addTask() {
     const newTask: TaskCreateDto = {
       title: this.newTaskTitle(),
-      status: "test",
+      status: "en cours",
       priority: this.newTaskPriority()
     }
     console.log(newTask);
-    
+
     this.taskService.addTask(newTask).then(res => console.log(res)).catch(err => console.error(err));
     this.newTaskTitle.set("");
   }
@@ -51,22 +70,14 @@ export class TpTasksComponent {
     this.taskService.delTask(id).then(res => console.log(res)).catch(err => console.error(err));
   }
 
-  updateTaskTitle(title: string) {
-    this.editTaskTitle.set(title);
-  }
-
-  updateTask(id: string) {
-    if (this.editTaskTitle() == "") {
-      console.warn("ENTREZ QQCHOSE");
-    } else {
-      const editTask: Task = {
-        id: id,
-        title: this.editTaskTitle(),
-        status: "test",
-        priority: this.editTaskPriority()
-      }
-      this.taskService.updateTask(editTask).then(res => console.log(res)).catch(err => console.error(err));
-      this.editTaskTitle.set("");
+  updateTask(id: string, priority: string, title: string) {
+    const editTask: Task = {
+      id: id,
+      title: title,
+      status: "complete",
+      priority: priority
     }
+    this.taskService.updateTask(editTask).then(res => console.log(res)).catch(err => console.error(err));
+    console.log("Tâche " + title + " complétée!");
   }
 }
