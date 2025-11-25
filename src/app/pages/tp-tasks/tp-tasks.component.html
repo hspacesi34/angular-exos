@@ -13,19 +13,45 @@
         </select>
         <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
-
-    <div class="stats shadow mb-8 w-full max-w-3xl">
+    @if (errorMessage()) {
+    <div role="alert" class="alert alert-error mb-6 w-full max-w-3xl">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{ errorMessage() }}</span>
+    </div>
+    }
+    <div class="stats shadow mb-8 w-full max-w-3xl stats-horizontal overflow-x-auto">
 
         <div class="stat place-items-center">
-            <div class="stat-title">Tâches Complètes</div>
+            <div class="stat-title">Complètes</div>
             <div class="stat-value text-success">{{ tasksCompleted() }}</div>
-            <div class="stat-desc text-success">Bien joué !</div>
+            <div class="stat-desc">Total terminé</div>
         </div>
 
         <div class="stat place-items-center">
-            <div class="stat-title">Tâches Restantes</div>
+            <div class="stat-title">Restantes</div>
             <div class="stat-value text-warning">{{ tasksRemaining() }}</div>
-            <div class="stat-desc text-warning">Priorité !</div>
+            <div class="stat-desc">{{ tasks().length }} Tâches au total</div>
+        </div>
+
+        <div class="stat place-items-center">
+            <div class="stat-title">Priorité Basse</div>
+            <div class="stat-value text-info">{{ tasksByPriority('basse')() }}</div>
+            <div class="stat-desc">Détente</div>
+        </div>
+
+        <div class="stat place-items-center">
+            <div class="stat-title">Priorité Moyenne</div>
+            <div class="stat-value text-primary">{{ tasksByPriority('moyenne')() }}</div>
+            <div class="stat-desc">A surveiller</div>
+        </div>
+
+        <div class="stat place-items-center">
+            <div class="stat-title">Priorité Haute</div>
+            <div class="stat-value text-error">{{ tasksByPriority('haute')() }}</div>
+            <div class="stat-desc">À faire immédiatement</div>
         </div>
 
     </div>

@@ -18,6 +18,7 @@ export class TpTasksComponent {
   public newTaskPriority = signal<string>('');
   public editTaskTitle = signal<string>('');
   public editTaskPriority = signal<string>('');
+  public errorMessage = signal<string>('');
 
   constructor() {
   }
@@ -30,15 +31,20 @@ export class TpTasksComponent {
     return this.tasks().filter(t => t.status !== 'complete').length;
   });
 
+  tasksByPriority(priority: string) {
+    return computed(() => {
+      return this.tasks().filter(t => 
+        t.status !== 'complete' && t.priority === priority
+      ).length;
+    });
+  }
+
   ngOnInit() {
     this.getTasks();
   }
 
   getTasks() {
     this.taskService.getTasks().subscribe(data => {
-      // if (data.length > 0) {
-      //   console.log(data);
-      // }
       const PriorityOrder: Record<string, number> = {
         'haute': 1,
         'moyenne': 2,
@@ -55,15 +61,19 @@ export class TpTasksComponent {
   }
 
   addTask() {
-    const newTask: TaskCreateDto = {
-      title: this.newTaskTitle(),
-      status: "en cours",
-      priority: this.newTaskPriority()
+    if (this.newTaskTitle().length > 0 && this.newTaskPriority().length > 0) {
+      const newTask: TaskCreateDto = {
+        title: this.newTaskTitle(),
+        status: "en cours",
+        priority: this.newTaskPriority()
+      }
+      console.log(newTask);
+  
+      this.taskService.addTask(newTask).then(res => console.log(res)).catch(err => console.error(err));
+      this.newTaskTitle.set("");
+    } else {
+      this.errorMessage.set("ENTREZ UN TITRE ET PRIORITY");
     }
-    console.log(newTask);
-
-    this.taskService.addTask(newTask).then(res => console.log(res)).catch(err => console.error(err));
-    this.newTaskTitle.set("");
   }
 
   delTask(id: string) {
