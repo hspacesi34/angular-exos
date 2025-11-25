@@ -2,16 +2,34 @@
 
     <h2>Liste des tâches</h2>
 
-    <form (ngSubmit)="addTask()" class="flex items-center space-x-3 mb-6">
-        <input [(ngModel)]="newTaskTitle" name="task" type="text" placeholder="Nouvelle tâche"
-            class="input input-bordered w-full max-w-xs" />
-        <select [(ngModel)]="newTaskPriority" name="priority" class="select select-bordered">
-            <option disabled selected>Priorité</option>
-            <option [ngValue]="'basse'">Basse</option>
-            <option [ngValue]="'moyenne'">Moyenne</option>
-            <option [ngValue]="'haute'">Haute</option>
-        </select>
-        <button type="submit" class="btn btn-primary">Ajouter</button>
+    <form (ngSubmit)="addTask()"
+        class="flex flex-col md:flex-row items-stretch md:items-center space-y-3 md:space-y-0 md:space-x-4 mb-4 w-full max-w-3xl">
+
+        <div class="form-control w-full md:w-2/5">
+            <label class="label">
+                <span class="label-text font-semibold">Titre de la tâche</span>
+            </label>
+            <input [(ngModel)]="newTaskTitle" name="task" type="text" placeholder="Ex: Acheter le lait"
+                class="input input-bordered w-full" required />
+        </div>
+
+        <div class="form-control w-full md:w-2/5">
+            <label class="label">
+                <span class="label-text font-semibold">Priorité</span>
+            </label>
+            <select [(ngModel)]="newTaskPriority" name="priority" class="select select-bordered" required>
+                <option disabled selected value>Choisissez une priorité</option>
+                <option [ngValue]="'basse'">Basse 🟢</option>
+                <option [ngValue]="'moyenne'">Moyenne 🟡</option>
+                <option [ngValue]="'haute'">Haute 🔴</option>
+            </select>
+        </div>
+
+        <div class="pt-8 self-start md:self-end md:w-1/5">
+            <button type="submit" class="btn btn-primary w-full md:w-auto">
+                Ajouter la tâche
+            </button>
+        </div>
     </form>
     @if (errorMessage()) {
     <div role="alert" class="alert alert-error mb-6 w-full max-w-3xl">

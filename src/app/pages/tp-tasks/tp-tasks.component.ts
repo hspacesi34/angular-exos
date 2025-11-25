@@ -62,6 +62,7 @@ export class TpTasksComponent {
 
   addTask() {
     if (this.newTaskTitle().length > 0 && this.newTaskPriority().length > 0) {
+      this.errorMessage.set('');
       const newTask: TaskCreateDto = {
         title: this.newTaskTitle(),
         status: "en cours",
